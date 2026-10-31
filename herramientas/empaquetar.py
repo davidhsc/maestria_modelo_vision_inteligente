@@ -36,7 +36,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
-INCLUIR = ["README.md", "LEEME_DESPLIEGUE.md", "CHANGELOG.md", "docs", "requirements.txt", "requirements-api.txt",
+INCLUIR = ["README.md", "LEEME_DESPLIEGUE.md", "CHANGELOG.md", "docs/MANUAL.md", "requirements.txt", "requirements-api.txt",
            "requirements-edge.txt", "Dockerfile", "Dockerfile.edge", "docker-compose.yml", ".dockerignore",
            "docker", "config", "models", "src", "data/ejemplos"]
 EXTRAS_COMPLETO = ["requirements-notebook.txt", ".gitattributes", "entrenamiento/generar_dataset.py",
