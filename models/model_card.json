@@ -42,6 +42,52 @@
   },
   "versiones": {
     "tensorflow": "2.21.0",
-    "keras": "3.15.1"
+    "keras": "3.15.1",
+    "ai_edge_litert": "2.3.0"
+  },
+  "artefactos": {
+    "modelo_figuras_v1.keras": {
+      "formato": "keras",
+      "precision": "float32",
+      "bytes": 3483268,
+      "sha256": "06b88942d630dc4abc1fa85d66c28355f31dca878af748b0960a2ad4a4a1cf75",
+      "exactitud_prueba": 0.9944
+    },
+    "modelo_figuras_v1_float32.tflite": {
+      "formato": "tflite",
+      "precision": "float32",
+      "bytes": 1148200,
+      "sha256": "60af7b2c95a44d58385a8a1640b4b5d9d1b9cc018c071cddb052782391ac2aa7",
+      "exactitud_prueba": 0.9944,
+      "dif_max_prob_vs_keras": 0.0,
+      "empates_prueba": 0
+    },
+    "modelo_figuras_v1_float16.tflite": {
+      "formato": "tflite",
+      "precision": "float16",
+      "bytes": 578596,
+      "sha256": "af0b4ce711e5ce0ddf71b3f1e56b07cd9cc4a5f95897812f0432c35009a3a997",
+      "exactitud_prueba": 0.9944,
+      "dif_max_prob_vs_keras": 0.00088,
+      "empates_prueba": 0
+    },
+    "modelo_figuras_v1_int8_pesos.tflite": {
+      "formato": "tflite",
+      "precision": "int8_pesos",
+      "bytes": 294680,
+      "sha256": "293c7a2f95183ad0bde63445bcb141459034666285994a00ead981859f4b6b91",
+      "exactitud_prueba": 0.9944,
+      "dif_max_prob_vs_keras": 0.00855,
+      "empates_prueba": 0
+    },
+    "modelo_figuras_v1_int8_completo.tflite": {
+      "formato": "tflite",
+      "precision": "int8_completo",
+      "bytes": 296888,
+      "sha256": "a6e509f8ed6242ce5a19ae4d5656f34cd2cf31cbf9c6913e5401b15d99d23862",
+      "exactitud_prueba": 1.0,
+      "dif_max_prob_vs_keras": 0.16809,
+      "empates_prueba": 4
+    }
   }
 }

@@ -1,0 +1,37 @@
+{
+  "entorno": "docker",
+  "imagen": "vision-figuras:1.0-completo",
+  "cpus_docker": null,
+  "memoria_docker": null,
+  "escenario": "docker_completo",
+  "motor": "keras",
+  "modelo": "modelo_figuras_v1.keras",
+  "modelo_kb": 3401.6,
+  "hilos": null,
+  "python": "3.12.3",
+  "cpus_visibles": 2,
+  "limite_cpus": null,
+  "limite_memoria_mb": null,
+  "proceso_hasta_modelo_listo_s": 3.799,
+  "carga_s": 3.623,
+  "imagenes": 180,
+  "exactitud": 0.9944,
+  "preproceso_ms_por_imagen": 0.028,
+  "latencia_inferencia": {
+    "p50_ms": 12.189,
+    "p95_ms": 18.582,
+    "media_ms": 13.165
+  },
+  "latencia_punta_a_punta": {
+    "p50_ms": 12.295,
+    "p95_ms": 18.689,
+    "media_ms": 13.271
+  },
+  "fps_max_estimado": 81.3,
+  "throughput_img_s": {
+    "lote_32": 989.8
+  },
+  "memoria_pico_mb": 649.3,
+  "memoria_anonima_mb": 311.6,
+  "memoria_librerias_mb": 337.9
+}

@@ -1,0 +1,5 @@
+$ docker run --rm -v /home/claude/maestria_modelo_vision_inteligente/data:/app/data:ro --cpus=0.25 --memory=64m --memory-swap=64m vision-figuras:1.0-edge benchmark --etiqueta docker_edge_0.25cpu_64mb
+
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+
+[código de salida: 137] [duración: 1.96 s]

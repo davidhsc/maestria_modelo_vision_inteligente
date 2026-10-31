@@ -23,6 +23,7 @@ Escribe en outputs/<run_id>/: resultados.csv, resumen.json y las imágenes/video
 
 import argparse
 import csv
+import os
 import sys
 import time
 from pathlib import Path
@@ -31,7 +32,7 @@ import cv2
 
 from configuracion import cargar_config, ruta_absoluta
 from entrada import ErrorEntrada, abrir_fuente_video, leer_imagen, listar_imagenes
-from modelo import ErrorModelo, cargar_modelo, dispositivo_disponible, inferir, leer_clases
+from modelo import ErrorModelo, cargar_modelo, inferir, leer_clases
 from postprocesamiento import INCIERTO, SuavizadorTemporal, interpretar
 from preprocesamiento import crear_lote, preprocesar
 from registro import configurar_log, nuevo_run_id, registrar_ejecucion
@@ -43,7 +44,8 @@ class PipelineOperativo:
     """Agrupa el modelo ya cargado + la configuración, y ofrece un método por modo."""
 
     def __init__(self, ruta_config=None, modo="interactivo", umbral=None, carpeta_salida=None):
-        self.cfg = cargar_config(ruta_config)
+        # Orden de prioridad: argumento --config  >  variable de entorno PIPELINE_CONFIG  >  config/config.yaml
+        self.cfg = cargar_config(ruta_config or os.environ.get("PIPELINE_CONFIG"))
         if umbral is not None:                                       # el CLI puede sobrescribir el config
             self.cfg["postprocesamiento"]["umbral_confianza"] = umbral
         self.salida_base = ruta_absoluta(carpeta_salida or self.cfg["salida"]["carpeta"])
@@ -59,7 +61,7 @@ class PipelineOperativo:
         self.clases = leer_clases(ruta_absoluta(m["clases"]))
         self.modelo, self.tarjeta = cargar_modelo(
             ruta_absoluta(m["ruta"]), ruta_absoluta(m["tarjeta"]), self.forma,
-            verificar_hash=m.get("verificar_hash", True), log=self.log)
+            verificar_hash=m.get("verificar_hash", True), log=self.log, hilos=m.get("hilos"))
         if self.tarjeta.get("clases") and self.tarjeta["clases"] != self.clases:
             raise ErrorModelo("clases.txt no coincide con las clases de model_card.json")
 
@@ -80,7 +82,7 @@ class PipelineOperativo:
         """Guarda resumen.json y agrega la línea de auditoría."""
         resumen = {"run_id": self.run_id, "modo": modo, "entrada": str(entrada),
                    "modelo": self.tarjeta.get("archivo"), "version_modelo": self.tarjeta.get("version"),
-                   "dispositivo": dispositivo_disponible(),
+                   "motor": self.modelo.motor, "dispositivo": self.modelo.dispositivo,
                    "umbral_confianza": self.cfg["postprocesamiento"]["umbral_confianza"], **resumen}
         guardar_json(resumen, self.carpeta_run / "resumen.json")
         lat = resumen.get("latencia_por_imagen", {})
@@ -92,16 +94,21 @@ class PipelineOperativo:
         self.log.info(f"Resultados en: {self.carpeta_run}")
         return resumen
 
+    # ------------------------------------------------------------------ una imagen ya en memoria
+    def predecir_arreglo(self, img):
+        """Fases 4 a 7 para una imagen ya leída (arreglo de OpenCV). La usa también la API."""
+        inicio = time.perf_counter()
+        x = crear_lote([self._preprocesar(img)])                        # Fase 4  -> (1, 64, 64, 1)
+        probabilidades, ms = inferir(self.modelo, x)                    # Fase 6
+        return {**self._interpretar(probabilidades[0]),                 # Fase 7
+                "inferencia_ms": round(ms, 2),
+                "total_ms": round((time.perf_counter() - inicio) * 1000, 2)}
+
     # ------------------------------------------------------------------ modo IMAGEN
     def predecir_imagen(self, ruta, guardar=True):
         """Pipeline completo para UNA imagen. Devuelve el diccionario de resultado."""
-        inicio = time.perf_counter()
         img = self._leer(ruta)                                          # Fase 3
-        x = crear_lote([self._preprocesar(img)])                        # Fase 4  -> (1, 64, 64, 1)
-        probabilidades, ms = inferir(self.modelo, x)                    # Fase 6
-        resultado = {"archivo": Path(ruta).name, **self._interpretar(probabilidades[0]),
-                     "inferencia_ms": round(ms, 2),
-                     "total_ms": round((time.perf_counter() - inicio) * 1000, 2)}   # Fase 7
+        resultado = {"archivo": Path(ruta).name, **self.predecir_arreglo(img)}
         self.log.info(f"{resultado['archivo']}: {resultado['clase']} ({resultado['confianza']:.1%}) "
                       f"[{resultado['estado']}] en {resultado['total_ms']:.1f} ms")
         if guardar:                                                     # Fase 8

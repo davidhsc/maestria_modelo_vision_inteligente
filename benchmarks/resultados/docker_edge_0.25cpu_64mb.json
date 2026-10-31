@@ -1,0 +1,8 @@
+{
+  "escenario": "docker_edge_0.25cpu_64mb",
+  "entorno": "docker",
+  "imagen": "vision-figuras:1.0-edge",
+  "cpus_docker": 0.25,
+  "memoria_docker": "64m",
+  "estado": "memoria insuficiente: Docker detuvo el proceso (OOM, código 137)"
+}

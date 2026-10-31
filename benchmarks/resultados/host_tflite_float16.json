@@ -1,0 +1,35 @@
+{
+  "entorno": "host",
+  "escenario": "host_tflite_float16",
+  "motor": "tflite",
+  "modelo": "modelo_figuras_v1_float16.tflite",
+  "modelo_kb": 565.0,
+  "hilos": 1,
+  "python": "3.13.18",
+  "cpus_visibles": 2,
+  "limite_cpus": null,
+  "limite_memoria_mb": null,
+  "proceso_hasta_modelo_listo_s": 0.147,
+  "carga_s": 0.011,
+  "imagenes": 180,
+  "exactitud": 0.9944,
+  "preproceso_ms_por_imagen": 0.026,
+  "latencia_inferencia": {
+    "p50_ms": 0.317,
+    "p95_ms": 0.446,
+    "media_ms": 0.331
+  },
+  "latencia_punta_a_punta": {
+    "p50_ms": 0.354,
+    "p95_ms": 0.504,
+    "media_ms": 0.37
+  },
+  "fps_max_estimado": 2822.3,
+  "throughput_img_s": {
+    "lote_8": 3333.5,
+    "lote_32": 3168.6
+  },
+  "memoria_pico_mb": 157.1,
+  "memoria_anonima_mb": 102.8,
+  "memoria_librerias_mb": 54.4
+}

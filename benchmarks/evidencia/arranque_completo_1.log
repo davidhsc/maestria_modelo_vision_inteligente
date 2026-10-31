@@ -1,0 +1,20 @@
+$ docker run --rm -v /home/claude/maestria_modelo_vision_inteligente/data:/app/data:ro vision-figuras:1.0-completo --modo imagen --entrada data/ejemplos/nuevas/triangulo_1.png
+
+20:47:16 | INFO    | === Ejecución 20261031-204716_imagen ===
+20:47:16 | INFO    | Huella SHA-256 verificada (06b88942d630...)
+20:47:19 | INFO    | Modelo cargado: modelo_figuras_v1.keras v1.0.0 (motor keras) en 3.13 s
+20:47:19 | INFO    | Dispositivo de ejecución: CPU
+20:47:19 | INFO    | Prueba de integridad correcta (salida (1, 3), suma de probabilidades = 1.000)
+20:47:19 | INFO    | triangulo_1.png: triangulo (99.9%) [ok] en 13.2 ms
+20:47:19 | INFO    | Resultados en: /app/outputs/20261031-204716_imagen
+
+==================================================
+RESULTADO: triangulo  (99.93%)  [ok]
+triangulo=99.93%  cuadrado=0.07%  circulo=0.00%
+==================================================
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793479636.970974       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793479639.109668       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+
+[código de salida: 0] [duración: 4.64 s]

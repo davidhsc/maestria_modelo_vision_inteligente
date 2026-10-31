@@ -1,0 +1,41 @@
+$ docker run --rm -v /home/claude/maestria_modelo_vision_inteligente/data:/app/data:ro --cpus=1 --memory=512m --memory-swap=512m vision-figuras:1.0-completo benchmark --etiqueta docker_completo_1cpu_512mb
+
+{
+  "escenario": "docker_completo_1cpu_512mb",
+  "motor": "keras",
+  "modelo": "modelo_figuras_v1.keras",
+  "modelo_kb": 3401.6,
+  "hilos": null,
+  "python": "3.12.3",
+  "cpus_visibles": 2,
+  "limite_cpus": 1.0,
+  "limite_memoria_mb": 512,
+  "proceso_hasta_modelo_listo_s": 2.703,
+  "carga_s": 2.5,
+  "imagenes": 180,
+  "exactitud": 0.9944,
+  "preproceso_ms_por_imagen": 0.034,
+  "latencia_inferencia": {
+    "p50_ms": 10.859,
+    "p95_ms": 16.684,
+    "media_ms": 11.987
+  },
+  "latencia_punta_a_punta": {
+    "p50_ms": 10.966,
+    "p95_ms": 16.816,
+    "media_ms": 12.09
+  },
+  "fps_max_estimado": 91.2,
+  "throughput_img_s": {
+    "lote_32": 917.4
+  },
+  "memoria_pico_mb": 646.6,
+  "memoria_anonima_mb": 308.8,
+  "memoria_librerias_mb": 338.1
+}
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793479612.345128       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793479613.870193       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+
+[código de salida: 0] [duración: 8.69 s]

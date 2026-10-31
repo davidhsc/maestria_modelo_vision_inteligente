@@ -1,5 +1,9 @@
-# Extras solo para ejecutar los notebooks (análisis y gráficas)
+# Extras para desarrollo: notebooks (análisis y gráficas) y scripts de herramientas/.
+# NO se instalan en los contenedores.
 -r requirements.txt
 pandas>=2.2
 matplotlib>=3.9
 jupyter
+scikit-learn>=1.5        # herramientas/generar_datos_prueba.py (división del conjunto de prueba)
+tensorflow-cpu==2.21.0 ; platform_system != "Darwin"
+ai-edge-litert==2.3.0    # herramientas/convertir_tflite.py

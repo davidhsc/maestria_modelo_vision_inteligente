@@ -1,0 +1,18 @@
+$ docker run -d -p 8101:8000 vision-figuras:1.0-edge
+
+20:47:36 | INFO    | === Ejecución 20261031-204736_api ===
+20:47:36 | INFO    | Huella SHA-256 verificada (293c7a2f9518...)
+20:47:36 | INFO    | Modelo cargado: modelo_figuras_v1_int8_pesos.tflite v1.0.0 (motor tflite) en 0.01 s
+20:47:36 | INFO    | Dispositivo de ejecución: CPU (LiteRT, 1 hilos)
+20:47:36 | INFO    | Prueba de integridad correcta (salida (1, 3), suma de probabilidades = 1.000)
+INFO:     172.17.0.1:33274 - "GET /health HTTP/1.1" 200 OK
+20:47:36 | INFO    | API /predict 'cuadrado_1.png': cuadrado (99.7%) en 0.5 ms
+INFO:     172.17.0.1:33288 - "POST /predict HTTP/1.1" 200 OK
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+
+$ curl -F imagen=@cuadrado_1.png http://localhost:8101/predict
+{"archivo":"cuadrado_1.png","clase":"cuadrado","confianza":0.9974,"estado":"ok","top":[{"clase":"cuadrado","prob":0.9974},{"clase":"triangulo","prob":0.0015},{"clase":"circulo","prob":0.0011}],"inferencia_ms":0.29,"total_ms":0.54}

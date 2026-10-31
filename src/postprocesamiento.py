@@ -17,7 +17,9 @@ import numpy as np
 
 def interpretar(probabilidades, clases, umbral=0.80, top_k=3):
     """Convierte el vector de probabilidades de UNA imagen en un diccionario legible."""
-    orden = np.argsort(probabilidades)[::-1]                 # índices de mayor a menor probabilidad
+    # Índices de mayor a menor probabilidad. kind="stable" hace que, si hay EMPATE
+    # (posible con modelos cuantizados a 8 bits), gane siempre la primera clase, igual que argmax.
+    orden = np.argsort(-np.asarray(probabilidades), kind="stable")
     indice = int(orden[0])
     confianza = float(probabilidades[indice])
     return {

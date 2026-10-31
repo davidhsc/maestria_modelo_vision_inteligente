@@ -1,0 +1,165 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.edge
+#1 transferring dockerfile: 1.82kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/base-local/python:3.12
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 383B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [ 1/10] FROM docker.io/base-local/python:3.12@sha256:7ddcbc33a65d4c7ef43ee17aa06d66be31efeec9bb44e8c3609d64617a9bd701
+#5 resolve docker.io/base-local/python:3.12@sha256:7ddcbc33a65d4c7ef43ee17aa06d66be31efeec9bb44e8c3609d64617a9bd701 0.0s done
+#5 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 2.39MB 0.1s done
+#4 DONE 0.1s
+
+#5 [ 1/10] FROM docker.io/base-local/python:3.12@sha256:7ddcbc33a65d4c7ef43ee17aa06d66be31efeec9bb44e8c3609d64617a9bd701
+#5 extracting sha256:484a9aeb853cb11a9f64950244c691f2ba107de43b6f64964b71d1aee7111679
+#5 extracting sha256:484a9aeb853cb11a9f64950244c691f2ba107de43b6f64964b71d1aee7111679 1.3s done
+#5 DONE 1.4s
+
+#6 [ 2/10] WORKDIR /app
+#6 DONE 0.3s
+
+#7 [ 3/10] RUN python3 -m venv /opt/venv
+#7 DONE 3.2s
+
+#8 [ 4/10] COPY requirements-edge.txt requirements-api.txt ./
+#8 DONE 0.0s
+
+#9 [ 5/10] RUN pip install -r requirements-edge.txt -r requirements-api.txt
+#9 0.482 Collecting ai-edge-litert==2.3.0 (from -r requirements-edge.txt (line 3))
+#9 0.786   Downloading ai_edge_litert-2.3.0-cp312-cp312-manylinux_2_27_x86_64.whl.metadata (2.2 kB)
+#9 1.040 Collecting numpy<3,>=1.26 (from -r requirements-edge.txt (line 4))
+#9 1.060   Downloading numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+#9 1.157 Collecting opencv-python-headless==5.0.0.93 (from -r requirements-edge.txt (line 5))
+#9 1.176   Downloading opencv_python_headless-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl.metadata (19 kB)
+#9 1.227 Collecting pyyaml>=6.0 (from -r requirements-edge.txt (line 6))
+#9 1.246   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#9 1.340 Collecting fastapi==0.162.0 (from -r requirements-api.txt (line 2))
+#9 1.365   Downloading fastapi-0.162.0-py3-none-any.whl.metadata (26 kB)
+#9 1.414 Collecting uvicorn==0.54.0 (from -r requirements-api.txt (line 3))
+#9 1.432   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#9 1.463 Collecting python-multipart==0.0.32 (from -r requirements-api.txt (line 4))
+#9 1.481   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+#9 1.512 Collecting backports.strenum (from ai-edge-litert==2.3.0->-r requirements-edge.txt (line 3))
+#9 1.532   Downloading backports_strenum-1.2.8-py3-none-any.whl.metadata (3.6 kB)
+#9 1.561 Collecting flatbuffers (from ai-edge-litert==2.3.0->-r requirements-edge.txt (line 3))
+#9 1.580   Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+#9 1.652 Collecting tqdm (from ai-edge-litert==2.3.0->-r requirements-edge.txt (line 3))
+#9 1.670   Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+#9 1.674      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.4/57.4 kB 231.9 MB/s eta 0:00:00
+#9 1.710 Collecting typing-extensions (from ai-edge-litert==2.3.0->-r requirements-edge.txt (line 3))
+#9 1.728   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#9 1.975 Collecting protobuf (from ai-edge-litert==2.3.0->-r requirements-edge.txt (line 3))
+#9 1.994   Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+#9 2.039 Collecting ml_dtypes (from ai-edge-litert==2.3.0->-r requirements-edge.txt (line 3))
+#9 2.060   Downloading ml_dtypes-0.6.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (8.8 kB)
+#9 2.160 Collecting starlette>=0.46.0 (from fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 2.178   Downloading starlette-1.10.0-py3-none-any.whl.metadata (6.6 kB)
+#9 2.334 Collecting pydantic>=2.9.0 (from fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 2.354   Downloading pydantic-2.14.2-py3-none-any.whl.metadata (137 kB)
+#9 2.360      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 137.6/137.6 kB 50.0 MB/s eta 0:00:00
+#9 2.392 Collecting typing-inspection>=0.4.2 (from fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 2.410   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#9 2.435 Collecting annotated-doc>=0.0.2 (from fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 2.452   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#9 2.494 Collecting opentelemetry-api>=1.44.0 (from fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 2.513   Downloading opentelemetry_api-1.45.2-py3-none-any.whl.metadata (1.4 kB)
+#9 2.556 Collecting click>=7.0 (from uvicorn==0.54.0->-r requirements-api.txt (line 3))
+#9 2.583   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#9 2.609 Collecting h11>=0.8 (from uvicorn==0.54.0->-r requirements-api.txt (line 3))
+#9 2.625   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#9 2.673 Collecting annotated-types>=0.6.0 (from pydantic>=2.9.0->fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 2.691   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#9 3.508 Collecting pydantic-core==2.50.2 (from pydantic>=2.9.0->fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 3.528   Downloading pydantic_core-2.50.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (6.5 kB)
+#9 3.650 Collecting anyio<5,>=4.0.0 (from starlette>=0.46.0->fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 3.668   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#9 3.739 Collecting idna>=2.8 (from anyio<5,>=4.0.0->starlette>=0.46.0->fastapi==0.162.0->-r requirements-api.txt (line 2))
+#9 3.760   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#9 3.790 Downloading ai_edge_litert-2.3.0-cp312-cp312-manylinux_2_27_x86_64.whl (21.8 MB)
+#9 4.863    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 21.8/21.8 MB 20.0 MB/s eta 0:00:00
+#9 4.890 Downloading opencv_python_headless-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl (61.2 MB)
+#9 8.111    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.2/61.2 MB 14.5 MB/s eta 0:00:00
+#9 8.130 Downloading fastapi-0.162.0-py3-none-any.whl (148 kB)
+#9 8.139    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 148.9/148.9 kB 25.1 MB/s eta 0:00:00
+#9 8.159 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#9 8.164    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.4/87.4 kB 57.7 MB/s eta 0:00:00
+#9 8.183 Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+#9 8.201 Downloading numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+#9 9.195    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.7/16.7 MB 18.1 MB/s eta 0:00:00
+#9 9.213 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+#9 9.253    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 21.9 MB/s eta 0:00:00
+#9 9.271 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#9 9.290 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#9 9.297    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.3/125.3 kB 49.2 MB/s eta 0:00:00
+#9 9.316 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#9 9.334 Downloading opentelemetry_api-1.45.2-py3-none-any.whl (60 kB)
+#9 9.338    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.3/60.3 kB 59.6 MB/s eta 0:00:00
+#9 9.357 Downloading pydantic-2.14.2-py3-none-any.whl (490 kB)
+#9 9.382    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 490.4/490.4 kB 23.2 MB/s eta 0:00:00
+#9 9.399 Downloading pydantic_core-2.50.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (2.2 MB)
+#9 9.509    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 20.8 MB/s eta 0:00:00
+#9 9.527 Downloading starlette-1.10.0-py3-none-any.whl (80 kB)
+#9 9.531    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.6/80.6 kB 85.0 MB/s eta 0:00:00
+#9 9.549 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#9 9.555    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 52.3 MB/s eta 0:00:00
+#9 9.573 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#9 9.595 Downloading backports_strenum-1.2.8-py3-none-any.whl (7.9 kB)
+#9 9.618 Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+#9 9.636 Downloading ml_dtypes-0.6.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (409 kB)
+#9 9.654    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 409.9/409.9 kB 24.9 MB/s eta 0:00:00
+#9 9.674 Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+#9 9.689    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 343.2/343.2 kB 27.2 MB/s eta 0:00:00
+#9 9.708 Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+#9 9.711    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.2/80.2 kB 91.3 MB/s eta 0:00:00
+#9 9.729 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#9 9.746 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#9 9.753    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 132.1/132.1 kB 54.3 MB/s eta 0:00:00
+#9 9.770 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#9 9.775    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.6/69.6 kB 38.8 MB/s eta 0:00:00
+#9 10.02 Installing collected packages: flatbuffers, typing-extensions, tqdm, pyyaml, python-multipart, protobuf, numpy, idna, h11, click, backports.strenum, annotated-types, annotated-doc, uvicorn, typing-inspection, pydantic-core, opentelemetry-api, opencv-python-headless, ml_dtypes, anyio, starlette, pydantic, ai-edge-litert, fastapi
+#9 17.77 Successfully installed ai-edge-litert-2.3.0 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 backports.strenum-1.2.8 click-8.5.0 fastapi-0.162.0 flatbuffers-25.12.19 h11-0.16.0 idna-3.20 ml_dtypes-0.6.0 numpy-2.5.4 opencv-python-headless-5.0.0.93 opentelemetry-api-1.45.2 protobuf-7.36.2 pydantic-2.14.2 pydantic-core-2.50.2 python-multipart-0.0.32 pyyaml-6.0.3 starlette-1.10.0 tqdm-4.70.1 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.54.0
+#9 DONE 18.9s
+
+#10 [ 6/10] COPY config/ config/
+#10 DONE 0.0s
+
+#11 [ 7/10] COPY models/clases.txt models/model_card.json models/*.tflite models/
+#11 DONE 0.0s
+
+#12 [ 8/10] COPY src/ src/
+#12 DONE 0.0s
+
+#13 [ 9/10] COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+#13 DONE 0.0s
+
+#14 [10/10] RUN useradd --create-home --uid 1000 app && mkdir -p outputs data && chown -R app:app /app
+#14 DONE 0.1s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 12.5s done
+#15 exporting manifest sha256:78423fe5521afb7bc6b772728203d5584f1b784594ece079740f41c9dfcbfcb5
+#15 exporting manifest sha256:78423fe5521afb7bc6b772728203d5584f1b784594ece079740f41c9dfcbfcb5 done
+#15 exporting config sha256:f22f2205b3db7c843af0f7bc8dec2236e5bd40fdbb2a4e66b7fa09e2a267d711 done
+#15 exporting attestation manifest sha256:1043ecbb6800844f602c14c2519e929afe674011caefbff657a9833c33d757cc 0.0s done
+#15 exporting manifest list sha256:3c8d04e1d86645e9ee147c3085ca266f2d093999c097d6f10ebfaaefc2d4162d done
+#15 naming to docker.io/library/vision-figuras:1.0-edge done
+#15 unpacking to docker.io/library/vision-figuras:1.0-edge
+#15 unpacking to docker.io/library/vision-figuras:1.0-edge 4.1s done
+#15 DONE 16.7s
+
+real	0m41.204s
+user	0m0.302s
+sys	0m0.160s

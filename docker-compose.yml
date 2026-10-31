@@ -1,0 +1,20 @@
+# Levanta los dos despliegues lado a lado:
+#   docker compose up --build
+#   completo -> http://localhost:8000      edge -> http://localhost:8001
+services:
+  completo:
+    build: { context: ., dockerfile: Dockerfile }
+    image: vision-figuras:1.0-completo
+    ports: ["8000:8000"]
+    volumes: ["./outputs:/app/outputs"]
+    restart: unless-stopped
+
+  edge:
+    build: { context: ., dockerfile: Dockerfile.edge }
+    image: vision-figuras:1.0-edge
+    ports: ["8001:8000"]
+    volumes: ["./outputs:/app/outputs"]
+    restart: unless-stopped
+    # Recursos de un dispositivo pequeño: medio núcleo y 256 MB de RAM
+    cpus: 0.5
+    mem_limit: 256m

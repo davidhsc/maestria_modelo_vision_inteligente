@@ -1,0 +1,11 @@
+$ docker run --rm --cpus=0.25 --memory=128m --memory-swap=128m -v "/home/claude/maestria_modelo_vision_inteligente/data:/app/data:ro" -v "/home/claude/maestria_modelo_vision_inteligente/outputs_docker:/app/outputs" vision-figuras:1.0-edge --modo tiempo-real --entrada data/video/figuras.mp4 --etiquetas data/video/figuras_etiquetas.csv --fps 200
+
+20:48:37 | INFO    | === Ejecución 20261031-204837_tiempo-real ===
+20:48:38 | INFO    | Huella SHA-256 verificada (293c7a2f9518...)
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+20:48:38 | INFO    | Modelo cargado: modelo_figuras_v1_int8_pesos.tflite v1.0.0 (motor tflite) en 0.01 s
+20:48:38 | INFO    | Dispositivo de ejecución: CPU (LiteRT, 1 hilos)
+20:48:38 | INFO    | Prueba de integridad correcta (salida (1, 3), suma de probabilidades = 1.000)
+20:48:38 | INFO    | Modo tiempo real: fuente 'data/video/figuras.mp4' (15 FPS de origen), objetivo 200.0 FPS = 5.0 ms por cuadro
+20:48:40 | INFO    | Cuadros procesados 173 / descartados 283 | 75.6 FPS efectivos | p95 0.95 ms | exactitud 92.09% (suavizada 74.82%)
+20:48:40 | INFO    | Resultados en: /app/outputs/20261031-204837_tiempo-real

@@ -12,6 +12,7 @@ modelo:
   tarjeta: models/model_card.json          # "ficha técnica": versión, métricas, entrada esperada
   clases: models/clases.txt                # nombres de las clases, uno por línea
   verificar_hash: true                     # comprobar que el archivo no se alteró (SHA-256)
+  hilos: null                              # solo .tflite: hilos de CPU (null = automático)
 
 preprocesamiento:
   # DEBE ser idéntico al entrenamiento (Actividad 3.3):

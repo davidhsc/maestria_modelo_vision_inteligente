@@ -9,7 +9,7 @@ triángulo**, 99.44 % de exactitud en prueba) y la lleva de un notebook de labor
 | Actividad | Entregable | Estado |
 |---|---|---|
 | 4.1 Pipeline operativo | `src/` + `notebooks/Practica_Tema4_1_Pipeline_Operativo.ipynb` | ✅ |
-| 4.2 Empaquetado y despliegue | Dockerfile, imagen *edge*, medición de rendimiento | ⏳ |
+| 4.2 Empaquetado y despliegue | `Dockerfile`, `Dockerfile.edge`, API, benchmark, `notebooks/Practica_Tema4_2_Empaquetado_Despliegue.ipynb` | ✅ |
 | 4.3 Paquete profesional y video-demo | Manual, video, versión 1.0 | ⏳ |
 
 ---
@@ -52,6 +52,21 @@ anotados), su log en `outputs/logs/` y una línea en `outputs/registro_ejecucion
 
 Código de salida: `0` = correcto; `1` = error de entrada o de modelo (mensaje en *stderr*).
 
+### Con Docker (Actividad 4.2)
+
+```bash
+docker build -f Dockerfile.edge -t vision-figuras:1.0-edge .        # imagen ligera (TFLite)
+docker run -d -p 8000:8000 vision-figuras:1.0-edge                  # servicio web -> http://localhost:8000
+docker run --rm -v "$PWD/data:/app/data:ro" vision-figuras:1.0-edge --modo lote --entrada data/conjunto_prueba
+```
+
+Detalles, imagen completa, `docker compose` y simulación de dispositivos edge: **[LEEME_DESPLIEGUE.md](LEEME_DESPLIEGUE.md)**.
+
+### Servicio web
+
+`uvicorn --app-dir src api:app --port 8000` (o el contenedor). Rutas: `GET /` (página para dibujar o subir una
+figura), `GET /health`, `GET /info`, `POST /predict` (campo `imagen`).
+
 ---
 
 ## Arquitectura del pipeline
@@ -75,12 +90,17 @@ Código de salida: `0` = correcto; `1` = error de entrada o de modelo (mensaje e
 ## Estructura
 
 ```
-├── config/config.yaml           Parámetros (rutas, umbral, tamaños, FPS): nada "hardcodeado"
+├── config/
+│   ├── config.yaml              Perfil completo (Keras): rutas, umbral, tamaños, FPS
+│   └── config_edge.yaml         Perfil edge (TFLite int8, 1 hilo)
 ├── models/
 │   ├── modelo_figuras_v1.keras  Modelo de la Actividad 3.3, versionado
+│   ├── modelo_figuras_v1_*.tflite  Variantes TFLite: float32, float16, int8_pesos, int8_completo
 │   ├── clases.txt               Una clase por línea (orden de las salidas de la red)
-│   └── model_card.json          Ficha técnica: entrada esperada, métricas, versiones, SHA-256
-├── src/                         Pipeline operativo (un módulo por fase)
+│   └── model_card.json          Ficha técnica: entrada, métricas, versiones, SHA-256 de cada artefacto
+├── src/                         Pipeline operativo (un módulo por fase), api.py y benchmark.py
+├── Dockerfile / Dockerfile.edge Imágenes completa y edge · docker/entrypoint.sh · docker-compose.yml
+├── benchmarks/                  Resultados de rendimiento (JSON) y evidencia de ejecución (logs)
 ├── data/
 │   ├── conjunto_prueba/         Las 180 imágenes de prueba de la 3.3 (para verificar paridad)
 │   ├── ejemplos/                Casos nuevos, variaciones, fuera de dominio, sin clase e inválidos
@@ -88,8 +108,10 @@ Código de salida: `0` = correcto; `1` = error de entrada o de modelo (mensaje e
 ├── notebooks/                   Práctica 4.1 ejecutada (análisis de resultados)
 ├── entrenamiento/               Actividad 3.3: generador del dataset y notebook de entrenamiento
 ├── herramientas/                Scripts de preparación (modelo y datos de prueba)
-├── requirements.txt             Dependencias con versión fija
-└── requirements-notebook.txt    Extras para los notebooks
+├── requirements.txt             Dependencias del pipeline completo (versión fija)
+├── requirements-edge.txt        Dependencias mínimas edge (sin TensorFlow)
+├── requirements-api.txt         Servicio web
+└── requirements-notebook.txt    Desarrollo: notebooks y herramientas
 ```
 
 ## Reproducir todo desde cero
@@ -101,6 +123,11 @@ jupyter nbconvert --to notebook --execute --inplace entrenamiento/Act3.3_Constru
 python herramientas/preparar_modelo.py                          # Fase 1: versiona el modelo y crea su ficha
 python herramientas/generar_datos_prueba.py                     # datos de prueba y video
 jupyter nbconvert --to notebook --execute --inplace notebooks/Practica_Tema4_1_Pipeline_Operativo.ipynb
+python herramientas/convertir_tflite.py                         # 4.2: variantes TFLite
+docker compose build                                            # 4.2: imágenes completa y edge
+python herramientas/benchmark_despliegue.py                     # 4.2: escenarios de rendimiento
+python herramientas/empaquetar.py                               # 4.2: paquete de entrega (dist/)
+jupyter nbconvert --to notebook --execute --inplace notebooks/Practica_Tema4_2_Empaquetado_Despliegue.ipynb
 ```
 
 > Si se reentrena el modelo, `preparar_modelo.py` actualiza la huella SHA-256 de la ficha técnica. Si el archivo del
@@ -117,3 +144,14 @@ jupyter nbconvert --to notebook --execute --inplace notebooks/Practica_Tema4_1_P
 | Video (figuras completas) | 100 % de exactitud |
 | Video (figura entrando por el borde) | 63 %: limitación identificada |
 | Archivos inválidos | rechazados con motivo, sin detener el lote |
+
+## Resultados principales (Actividad 4.2)
+
+| | Completo (Keras + TensorFlow) | Edge (TFLite int8 + LiteRT) |
+|---|---|---|
+| Exactitud | 99.44 % | 99.44 % |
+| Tamaño del modelo | 3.4 MB | 0.29 MB |
+| Imagen Docker | ≈ 2.3 GB | ≈ 0.6 GB |
+| Latencia por imagen (p50) | ≈ 12 ms | ≈ 0.2 ms |
+| RAM mínima del contenedor | 512 MB | 128 MB |
+| `docker run` → primera predicción | ≈ 4.4 s | ≈ 0.6 s |

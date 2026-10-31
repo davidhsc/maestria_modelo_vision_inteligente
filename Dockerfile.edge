@@ -1,0 +1,43 @@
+# =============================================================================
+# Dockerfile.edge  —  Imagen LIGERA para dispositivos edge
+# -----------------------------------------------------------------------------
+# Mismo pipeline y mismo código, pero:
+#   * SIN TensorFlow: usa LiteRT (runtime de TensorFlow Lite, ~30 MB en vez de ~600 MB).
+#   * Modelo .tflite con pesos cuantizados a int8 (~290 KB en vez de 3.4 MB).
+#   * Perfil config/config_edge.yaml: 1 hilo de CPU y lotes pequeños.
+# Construir:   docker build -f Dockerfile.edge -t vision-figuras:1.0-edge .
+# Simular un dispositivo pequeño (medio núcleo y 256 MB de RAM):
+#   docker run -p 8000:8000 --cpus=0.5 --memory=256m vision-figuras:1.0-edge
+# =============================================================================
+
+ARG BASE_IMAGE=python:3.12-slim
+FROM ${BASE_IMAGE}
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIPELINE_CONFIG=config/config_edge.yaml
+
+WORKDIR /app
+
+RUN python3 -m venv /opt/venv
+ENV PATH=/opt/venv/bin:$PATH
+COPY requirements-edge.txt requirements-api.txt ./
+RUN pip install -r requirements-edge.txt -r requirements-api.txt
+
+# Solo los modelos .tflite (no se copia el .keras ni TensorFlow)
+COPY config/ config/
+COPY models/clases.txt models/model_card.json models/*.tflite models/
+COPY src/ src/
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN useradd --create-home --uid 1000 app && mkdir -p outputs data && chown -R app:app /app
+USER app
+
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=4)" || exit 1
+
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["api"]

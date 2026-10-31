@@ -16,3 +16,5 @@ venv/
 Thumbs.db
 .vscode/
 .idea/
+dist/
+outputs_docker/

@@ -1,0 +1,4 @@
+# Servicio web (src/api.py). Se instala junto con requirements.txt o requirements-edge.txt
+fastapi==0.162.0
+uvicorn==0.54.0
+python-multipart==0.0.32

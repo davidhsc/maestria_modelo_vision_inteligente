@@ -1,0 +1,14 @@
+{
+  "completo": {
+    "imagen": "vision-figuras:1.0-completo",
+    "tamano_imagen_mb": 2330,
+    "docker_run_hasta_prediccion_s": 4.39,
+    "servicio_hasta_health_s": 3.42
+  },
+  "edge": {
+    "imagen": "vision-figuras:1.0-edge",
+    "tamano_imagen_mb": 614,
+    "docker_run_hasta_prediccion_s": 0.6,
+    "servicio_hasta_health_s": 1.0
+  }
+}

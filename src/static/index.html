@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clasificador de figuras · Visión Inteligente</title>
+<style>
+  :root { --azul: #1f3864; --azul2: #2e74b5; --verde: #2e7d32; --naranja: #e67e22; --gris: #f3f5f8; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--gris); color: #1d2433; }
+  header { background: var(--azul); color: #fff; padding: 18px 28px; }
+  header h1 { margin: 0; font-size: 1.35rem; }
+  header p { margin: 4px 0 0; opacity: .8; font-size: .9rem; }
+  main { max-width: 920px; margin: 24px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .tarjeta { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  h2 { margin: 0 0 12px; font-size: 1rem; color: var(--azul); }
+  canvas { width: 100%; aspect-ratio: 1; border: 2px dashed #b8c2d3; border-radius: 8px; touch-action: none; cursor: crosshair; background: #fff; }
+  .botones { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  button, label.boton { border: 0; border-radius: 6px; padding: 9px 14px; font-size: .9rem; cursor: pointer; background: #e4e9f1; color: var(--azul); font-weight: 600; }
+  button.principal { background: var(--azul2); color: #fff; }
+  input[type=file] { display: none; }
+  #clase { font-size: 2rem; font-weight: 700; margin: 4px 0; }
+  #estado { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: .8rem; color: #fff; }
+  .barra { margin: 10px 0; }
+  .barra span { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: 3px; }
+  .barra div { height: 12px; background: #e4e9f1; border-radius: 6px; overflow: hidden; }
+  .barra i { display: block; height: 100%; background: var(--azul2); transition: width .3s; }
+  #tiempos, #info { font-size: .8rem; color: #5b6578; margin-top: 12px; }
+  #vista { max-width: 100%; max-height: 120px; display: none; margin-top: 10px; border-radius: 6px; }
+  @media (max-width: 720px) { main { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Clasificador de figuras geométricas</h1>
+  <p>Visión Inteligente · Unidad IV · Dibuja o sube un círculo, un cuadrado o un triángulo</p>
+</header>
+<main>
+  <section class="tarjeta">
+    <h2>1. Dibuja una figura</h2>
+    <canvas id="lienzo" width="280" height="280"></canvas>
+    <div class="botones">
+      <button class="principal" id="clasificar">Clasificar dibujo</button>
+      <button id="limpiar">Limpiar</button>
+      <label class="boton">Subir imagen<input type="file" id="archivo" accept="image/*"></label>
+    </div>
+    <img id="vista" alt="Imagen subida">
+  </section>
+  <section class="tarjeta">
+    <h2>2. Resultado del modelo</h2>
+    <div id="clase">—</div>
+    <span id="estado"></span>
+    <div id="barras"></div>
+    <div id="tiempos"></div>
+    <div id="info"></div>
+  </section>
+</main>
+<script>
+  const lienzo = document.getElementById("lienzo"), ctx = lienzo.getContext("2d");
+  // Nombres para mostrar (las clases del modelo no llevan acentos)
+  const NOMBRE = { circulo: "Círculo", cuadrado: "Cuadrado", triangulo: "Triángulo" };
+  const etiqueta = c => NOMBRE[c] || c;
+  function limpiar() { ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, lienzo.width, lienzo.height); }
+  limpiar();
+  ctx.lineWidth = 10; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = "#222";
+
+  // Dibujo con mouse o dedo
+  let dibujando = false;
+  const punto = e => { const r = lienzo.getBoundingClientRect();
+    return [(e.clientX - r.left) * lienzo.width / r.width, (e.clientY - r.top) * lienzo.height / r.height]; };
+  lienzo.addEventListener("pointerdown", e => { dibujando = true; ctx.beginPath(); ctx.moveTo(...punto(e)); });
+  lienzo.addEventListener("pointermove", e => { if (dibujando) { ctx.lineTo(...punto(e)); ctx.stroke(); } });
+  ["pointerup", "pointerleave"].forEach(ev => lienzo.addEventListener(ev, () => dibujando = false));
+
+  // Enviar una imagen al servicio y mostrar la respuesta
+  async function enviar(blob, nombre) {
+    const datos = new FormData(); datos.append("imagen", blob, nombre);
+    const resp = await fetch("/predict", { method: "POST", body: datos });
+    const r = await resp.json();
+    if (!resp.ok) { document.getElementById("clase").textContent = "Error"; document.getElementById("tiempos").textContent = r.detail; return; }
+    document.getElementById("clase").textContent = etiqueta(r.clase);
+    const est = document.getElementById("estado");
+    est.textContent = r.estado === "ok" ? "confianza suficiente" : "baja confianza: revisar";
+    est.style.background = r.estado === "ok" ? "var(--verde)" : "var(--naranja)";
+    document.getElementById("barras").innerHTML = r.top.map(t =>
+      `<div class="barra"><span><b>${etiqueta(t.clase)}</b>${(t.prob * 100).toFixed(1)} %</span><div><i style="width:${t.prob * 100}%"></i></div></div>`).join("");
+    document.getElementById("tiempos").textContent = `Inferencia: ${r.inferencia_ms} ms · total en el servidor: ${r.total_ms} ms`;
+  }
+  document.getElementById("clasificar").onclick = () => lienzo.toBlob(b => enviar(b, "dibujo.png"));
+  document.getElementById("limpiar").onclick = () => { limpiar(); document.getElementById("vista").style.display = "none"; };
+  document.getElementById("archivo").onchange = e => {
+    const f = e.target.files[0]; if (!f) return;
+    const vista = document.getElementById("vista"); vista.src = URL.createObjectURL(f); vista.style.display = "block";
+    enviar(f, f.name);
+  };
+
+  // Datos del modelo desplegado
+  fetch("/info").then(r => r.json()).then(i => {
+    document.getElementById("info").textContent =
+      `Modelo v${i.version} · ${i.archivo} · motor ${i.motor} · ${i.dispositivo} · umbral ${i.umbral_confianza}`;
+  });
+</script>
+</body>
+</html>

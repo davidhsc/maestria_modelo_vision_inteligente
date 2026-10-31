@@ -1,0 +1,16 @@
+# Lo que NO entra a la imagen: datos, resultados, notebooks, entrenamiento e historial de git.
+# Los datos se montan como volumen al ejecutar (-v), así la imagen sirve para cualquier dato.
+.git
+.gitignore
+outputs/
+data/
+notebooks/
+entrenamiento/
+herramientas/
+benchmarks/
+docs/
+entregables/
+**/__pycache__
+**/.ipynb_checkpoints
+.venv/
+*.md

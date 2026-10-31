@@ -1,0 +1,21 @@
+$ docker run -d -p 8100:8000 vision-figuras:1.0-completo
+
+20:47:30 | INFO    | === Ejecución 20261031-204730_api ===
+20:47:30 | INFO    | Huella SHA-256 verificada (06b88942d630...)
+20:47:32 | INFO    | Modelo cargado: modelo_figuras_v1.keras v1.0.0 (motor keras) en 2.46 s
+20:47:32 | INFO    | Dispositivo de ejecución: CPU
+20:47:32 | INFO    | Prueba de integridad correcta (salida (1, 3), suma de probabilidades = 1.000)
+INFO:     172.17.0.1:59784 - "GET /health HTTP/1.1" 200 OK
+20:47:32 | INFO    | API /predict 'cuadrado_1.png': cuadrado (99.7%) en 13.0 ms
+INFO:     172.17.0.1:59790 - "POST /predict HTTP/1.1" 200 OK
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793479650.554233       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793479652.229713       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+
+$ curl -F imagen=@cuadrado_1.png http://localhost:8100/predict
+{"archivo":"cuadrado_1.png","clase":"cuadrado","confianza":0.9974,"estado":"ok","top":[{"clase":"cuadrado","prob":0.9974},{"clase":"triangulo","prob":0.0015},{"clase":"circulo","prob":0.0011}],"inferencia_ms":12.69,"total_ms":12.97}

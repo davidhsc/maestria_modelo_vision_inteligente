@@ -1,0 +1,38 @@
+{
+  "entorno": "docker",
+  "imagen": "vision-figuras:1.0-edge",
+  "cpus_docker": 0.5,
+  "memoria_docker": "256m",
+  "escenario": "docker_edge_0.5cpu_256mb",
+  "motor": "tflite",
+  "modelo": "modelo_figuras_v1_int8_pesos.tflite",
+  "modelo_kb": 287.8,
+  "hilos": 1,
+  "python": "3.12.3",
+  "cpus_visibles": 2,
+  "limite_cpus": 0.5,
+  "limite_memoria_mb": 256,
+  "proceso_hasta_modelo_listo_s": 0.375,
+  "carga_s": 0.01,
+  "imagenes": 180,
+  "exactitud": 0.9944,
+  "preproceso_ms_por_imagen": 0.03,
+  "latencia_inferencia": {
+    "p50_ms": 0.145,
+    "p95_ms": 0.228,
+    "media_ms": 0.159
+  },
+  "latencia_punta_a_punta": {
+    "p50_ms": 0.166,
+    "p95_ms": 0.26,
+    "media_ms": 0.352
+  },
+  "fps_max_estimado": 6017.1,
+  "throughput_img_s": {
+    "lote_8": 2345.3,
+    "lote_32": 2150.1
+  },
+  "memoria_pico_mb": 138.1,
+  "memoria_anonima_mb": 90.9,
+  "memoria_librerias_mb": 42.8
+}

@@ -1,0 +1,39 @@
+$ /usr/local/bin/python3 src/benchmark.py --etiqueta host_tflite_int8_pesos --modelo models/modelo_figuras_v1_int8_pesos.tflite --config config/config_edge.yaml
+
+{
+  "escenario": "host_tflite_int8_pesos",
+  "motor": "tflite",
+  "modelo": "modelo_figuras_v1_int8_pesos.tflite",
+  "modelo_kb": 287.8,
+  "hilos": 1,
+  "python": "3.13.18",
+  "cpus_visibles": 2,
+  "limite_cpus": null,
+  "limite_memoria_mb": null,
+  "proceso_hasta_modelo_listo_s": 0.136,
+  "carga_s": 0.009,
+  "imagenes": 180,
+  "exactitud": 0.9944,
+  "preproceso_ms_por_imagen": 0.025,
+  "latencia_inferencia": {
+    "p50_ms": 0.135,
+    "p95_ms": 0.221,
+    "media_ms": 0.146
+  },
+  "latencia_punta_a_punta": {
+    "p50_ms": 0.152,
+    "p95_ms": 0.255,
+    "media_ms": 0.168
+  },
+  "fps_max_estimado": 6577.6,
+  "throughput_img_s": {
+    "lote_8": 6472.0,
+    "lote_32": 6308.6
+  },
+  "memoria_pico_mb": 153.9,
+  "memoria_anonima_mb": 100.0,
+  "memoria_librerias_mb": 54.1
+}
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+
+[código de salida: 0] [duración: 0.66 s]

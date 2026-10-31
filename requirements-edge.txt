@@ -1,0 +1,6 @@
+# Dependencias MÍNIMAS para el despliegue edge: SIN TensorFlow.
+# El modelo .tflite se ejecuta con LiteRT (el runtime ligero de TensorFlow Lite).
+ai-edge-litert==2.3.0
+numpy>=1.26,<3
+opencv-python-headless==5.0.0.93
+pyyaml>=6.0

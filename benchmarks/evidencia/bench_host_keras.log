@@ -1,0 +1,41 @@
+$ /usr/local/bin/python3 src/benchmark.py --etiqueta host_keras
+
+{
+  "escenario": "host_keras",
+  "motor": "keras",
+  "modelo": "modelo_figuras_v1.keras",
+  "modelo_kb": 3401.6,
+  "hilos": null,
+  "python": "3.13.18",
+  "cpus_visibles": 2,
+  "limite_cpus": null,
+  "limite_memoria_mb": null,
+  "proceso_hasta_modelo_listo_s": 5.332,
+  "carga_s": 5.075,
+  "imagenes": 180,
+  "exactitud": 0.9944,
+  "preproceso_ms_por_imagen": 0.023,
+  "latencia_inferencia": {
+    "p50_ms": 12.527,
+    "p95_ms": 17.54,
+    "media_ms": 13.227
+  },
+  "latencia_punta_a_punta": {
+    "p50_ms": 12.644,
+    "p95_ms": 17.711,
+    "media_ms": 13.345
+  },
+  "fps_max_estimado": 79.1,
+  "throughput_img_s": {
+    "lote_32": 1120.5
+  },
+  "memoria_pico_mb": 761.1,
+  "memoria_anonima_mb": 409.0,
+  "memoria_librerias_mb": 352.4
+}
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793479576.159433    7980 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793479578.649664    7980 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+
+[código de salida: 0] [duración: 11.38 s]

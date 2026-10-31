@@ -1,0 +1,39 @@
+$ docker run --rm -v /home/claude/maestria_modelo_vision_inteligente/data:/app/data:ro vision-figuras:1.0-edge benchmark --etiqueta docker_edge
+
+{
+  "escenario": "docker_edge",
+  "motor": "tflite",
+  "modelo": "modelo_figuras_v1_int8_pesos.tflite",
+  "modelo_kb": 287.8,
+  "hilos": 1,
+  "python": "3.12.3",
+  "cpus_visibles": 2,
+  "limite_cpus": null,
+  "limite_memoria_mb": null,
+  "proceso_hasta_modelo_listo_s": 0.236,
+  "carga_s": 0.016,
+  "imagenes": 180,
+  "exactitud": 0.9944,
+  "preproceso_ms_por_imagen": 0.032,
+  "latencia_inferencia": {
+    "p50_ms": 0.193,
+    "p95_ms": 0.284,
+    "media_ms": 0.206
+  },
+  "latencia_punta_a_punta": {
+    "p50_ms": 0.232,
+    "p95_ms": 0.328,
+    "media_ms": 0.248
+  },
+  "fps_max_estimado": 4317.9,
+  "throughput_img_s": {
+    "lote_8": 5218.0,
+    "lote_32": 5774.0
+  },
+  "memoria_pico_mb": 137.6,
+  "memoria_anonima_mb": 90.6,
+  "memoria_librerias_mb": 42.5
+}
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+
+[código de salida: 0] [duración: 1.29 s]
