@@ -14,3 +14,4 @@ entregables/
 **/.ipynb_checkpoints
 .venv/
 *.md
+certs/

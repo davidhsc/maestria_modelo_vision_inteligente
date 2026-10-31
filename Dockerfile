@@ -28,13 +28,25 @@ WORKDIR /app
 RUN python3 -m venv /opt/venv
 ENV PATH=/opt/venv/bin:$PATH
 COPY requirements.txt requirements-api.txt ./
-RUN pip install -r requirements.txt -r requirements-api.txt
+# Redes corporativas (proxy o antivirus que inspecciona HTTPS): el certificado raíz de la empresa
+# se pasa como SECRETO de BuildKit. Se usa solo durante este paso y NO queda guardado en la imagen.
+#   docker build --secret id=ca_corporativa,src=certs/ca-windows.pem ...
+# Sin el secreto, el paso funciona igual que siempre.
+RUN --mount=type=secret,id=ca_corporativa \
+    if [ -s /run/secrets/ca_corporativa ]; then \
+        cat /etc/ssl/certs/ca-certificates.crt /run/secrets/ca_corporativa > /tmp/ca.pem; \
+        export PIP_CERT=/tmp/ca.pem; \
+    fi; \
+    pip install -r requirements.txt -r requirements-api.txt && rm -f /tmp/ca.pem
 
 # 2) Solo lo necesario para operar: código, configuración y el modelo Keras
 COPY config/ config/
 COPY models/clases.txt models/model_card.json models/modelo_figuras_v1.keras models/
 COPY src/ src/
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+# Si el repositorio se clonó en Windows, el script puede venir con fin de línea CRLF:
+# se convierte a LF y se marca como ejecutable para que Linux lo pueda ejecutar.
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && chmod +x /usr/local/bin/entrypoint.sh
 
 # 3) Seguridad: el proceso NO corre como root
 RUN useradd --create-home --uid 1000 app && mkdir -p outputs data && chown -R app:app /app

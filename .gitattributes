@@ -1,0 +1,6 @@
+# Los scripts que se ejecutan dentro de contenedores Linux SIEMPRE con fin de línea LF.
+# Si git los convierte a CRLF (Windows), Linux falla con "exec ...: no such file or directory".
+*.sh             text eol=lf
+Dockerfile*      text eol=lf
+*.yml            text eol=lf
+*.yaml           text eol=lf
