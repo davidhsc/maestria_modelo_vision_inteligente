@@ -1,0 +1,47 @@
+{
+  "nombre": "Clasificador de figuras geométricas",
+  "version": "1.0.0",
+  "archivo": "modelo_figuras_v1.keras",
+  "sha256": "06b88942d630dc4abc1fa85d66c28355f31dca878af748b0960a2ad4a4a1cf75",
+  "fecha_preparacion": "2026-10-31T18:58:36+00:00",
+  "origen": "Actividad 3.3 — Construcción del modelo de visión (modelo con aumento de datos)",
+  "tarea": "clasificación (una etiqueta por imagen)",
+  "arquitectura": "CNN 3 bloques Conv2D+MaxPooling (16-32-64) + Dense(64) + Dropout(0.3) + Dense(3, softmax)",
+  "parametros": 285699,
+  "capas_solo_entrenamiento": [
+    "random_flip_1",
+    "random_rotation_1",
+    "random_translation_1"
+  ],
+  "entrada": {
+    "forma": [
+      64,
+      64,
+      1
+    ],
+    "color": "escala de grises (1 canal)",
+    "normalizacion": "pixel / 255  ->  rango [0, 1]",
+    "dominio": "figura oscura sobre fondo claro, una figura por imagen"
+  },
+  "salida": {
+    "forma": [
+      3
+    ],
+    "tipo": "probabilidades softmax"
+  },
+  "clases": [
+    "circulo",
+    "cuadrado",
+    "triangulo"
+  ],
+  "metricas_prueba": {
+    "exactitud": 0.9944,
+    "perdida": 0.0314,
+    "macro_f1": 0.9944,
+    "imagenes": 180
+  },
+  "versiones": {
+    "tensorflow": "2.21.0",
+    "keras": "3.15.1"
+  }
+}

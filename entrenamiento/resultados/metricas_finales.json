@@ -1,0 +1,123 @@
+{
+  "clases": [
+    "circulo",
+    "cuadrado",
+    "triangulo"
+  ],
+  "imagenes": {
+    "entrenamiento": 840,
+    "validacion": 180,
+    "prueba": 180
+  },
+  "parametros": 285699,
+  "base": {
+    "epocas_ejecutadas": 32,
+    "mejor_epoca": 24,
+    "mejor_epoca_metricas": {
+      "pérdida_entr": 0.0739,
+      "exactitud_entr": 0.9774,
+      "pérdida_val": 0.1914,
+      "exactitud_val": 0.9278
+    },
+    "ultima_epoca_metricas": {
+      "pérdida_entr": 0.0465,
+      "exactitud_entr": 0.9857,
+      "pérdida_val": 0.2761,
+      "exactitud_val": 0.9389
+    },
+    "prueba": {
+      "perdida": 0.3825,
+      "exactitud": 0.8944
+    },
+    "por_clase": {
+      "circulo": {
+        "precision": 0.9444,
+        "recall": 0.85,
+        "f1-score": 0.8947
+      },
+      "cuadrado": {
+        "precision": 0.8387,
+        "recall": 0.8667,
+        "f1-score": 0.8525
+      },
+      "triangulo": {
+        "precision": 0.9062,
+        "recall": 0.9667,
+        "f1-score": 0.9355
+      }
+    },
+    "macro_f1": 0.8942,
+    "matriz_confusion": [
+      [
+        51,
+        8,
+        1
+      ],
+      [
+        3,
+        52,
+        5
+      ],
+      [
+        0,
+        2,
+        58
+      ]
+    ]
+  },
+  "aumento": {
+    "epocas_ejecutadas": 60,
+    "mejor_epoca": 60,
+    "mejor_epoca_metricas": {
+      "pérdida_entr": 0.0819,
+      "exactitud_entr": 0.9726,
+      "pérdida_val": 0.0131,
+      "exactitud_val": 1.0
+    },
+    "ultima_epoca_metricas": {
+      "pérdida_entr": 0.0819,
+      "exactitud_entr": 0.9726,
+      "pérdida_val": 0.0131,
+      "exactitud_val": 1.0
+    },
+    "prueba": {
+      "perdida": 0.0314,
+      "exactitud": 0.9944
+    },
+    "por_clase": {
+      "circulo": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0
+      },
+      "cuadrado": {
+        "precision": 1.0,
+        "recall": 0.9833,
+        "f1-score": 0.9916
+      },
+      "triangulo": {
+        "precision": 0.9836,
+        "recall": 1.0,
+        "f1-score": 0.9917
+      }
+    },
+    "macro_f1": 0.9944,
+    "matriz_confusion": [
+      [
+        60,
+        0,
+        0
+      ],
+      [
+        0,
+        59,
+        1
+      ],
+      [
+        0,
+        0,
+        60
+      ]
+    ]
+  }
+}

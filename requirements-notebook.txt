@@ -1,0 +1,5 @@
+# Extras solo para ejecutar los notebooks (análisis y gráficas)
+-r requirements.txt
+pandas>=2.2
+matplotlib>=3.9
+jupyter

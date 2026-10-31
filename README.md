@@ -1,0 +1,119 @@
+# Sistema de visión inteligente: clasificador de figuras geométricas
+
+**Maestría en Inteligencia Artificial · Visión Inteligente (ITV / TecNM) · Unidad IV: Despliegue de un modelo de visión**
+Autor: David Díaz de la Cruz
+
+Proyecto integrador de la Unidad IV. Toma la CNN entrenada en la **Actividad 3.3** (clasifica **círculo, cuadrado y
+triángulo**, 99.44 % de exactitud en prueba) y la lleva de un notebook de laboratorio a un sistema operativo y desplegable.
+
+| Actividad | Entregable | Estado |
+|---|---|---|
+| 4.1 Pipeline operativo | `src/` + `notebooks/Practica_Tema4_1_Pipeline_Operativo.ipynb` | ✅ |
+| 4.2 Empaquetado y despliegue | Dockerfile, imagen *edge*, medición de rendimiento | ⏳ |
+| 4.3 Paquete profesional y video-demo | Manual, video, versión 1.0 | ⏳ |
+
+---
+
+## Inicio rápido
+
+```bash
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+# Una imagen
+python src/pipeline_operativo.py --modo imagen --entrada data/ejemplos/nuevas/triangulo_1.png
+
+# Una carpeta completa (en lotes). Si tiene una subcarpeta por clase, calcula la exactitud.
+python src/pipeline_operativo.py --modo lote --entrada data/conjunto_prueba
+
+# Video cuadro por cuadro, simulando una cámara de 15 FPS (o --entrada 0 para una cámara real)
+python src/pipeline_operativo.py --modo tiempo-real --entrada data/video/figuras.mp4 \
+       --etiquetas data/video/figuras_etiquetas.csv --fps 15
+```
+
+Cada ejecución deja sus resultados en `outputs/<run_id>/` (`resultados.csv`, `resumen.json`, imágenes o video
+anotados), su log en `outputs/logs/` y una línea en `outputs/registro_ejecuciones.csv`.
+
+### Opciones del script
+
+| Opción | Modo | Descripción |
+|---|---|---|
+| `--modo {imagen,lote,tiempo-real}` | todos | Modo de ejecución (obligatorio) |
+| `--entrada` | todos | Imagen, carpeta, video o número de cámara |
+| `--config` | todos | Otro archivo de configuración (por defecto `config/config.yaml`) |
+| `--umbral 0.8` | todos | Confianza mínima para aceptar una predicción |
+| `--salida` | todos | Carpeta de resultados (por defecto `outputs/`) |
+| `--lote 32` | lote | Imágenes por lote |
+| `--guardar-imagenes` | lote | Guarda cada imagen anotada |
+| `--fps 15` | tiempo-real | Ritmo de llegada simulado de los cuadros |
+| `--sin-espera` | tiempo-real | Procesa a máxima velocidad (mide la capacidad) |
+| `--etiquetas` | tiempo-real | CSV `cuadro,clase_real` para medir exactitud |
+| `--mostrar` | tiempo-real | Abre una ventana con el video (requiere pantalla) |
+
+Código de salida: `0` = correcto; `1` = error de entrada o de modelo (mensaje en *stderr*).
+
+---
+
+## Arquitectura del pipeline
+
+```
+ imagen / carpeta / video
+        │
+ [Fase 3] entrada.py           leer + validar (formato, corrupto, vacío, tamaño, canales, 16 bits)
+        │
+ [Fase 4] preprocesamiento.py  gris → 64×64 → /255 → (N, 64, 64, 1)   ← idéntico a la Actividad 3.3
+        │
+ [Fase 5] modelo.py            SHA-256 + forma de entrada + prueba de integridad (al iniciar)
+ [Fase 6] modelo.py            forward-pass (training=False) medido en ms
+        │
+ [Fase 7] postprocesamiento.py clase + confianza + umbral; votación temporal en video
+        │
+ [Fase 8] salida.py            consola · JSON · CSV · imagen/video anotado
+ [Fase 9] registro.py          log por ejecución + bitácora de auditoría
+```
+
+## Estructura
+
+```
+├── config/config.yaml           Parámetros (rutas, umbral, tamaños, FPS): nada "hardcodeado"
+├── models/
+│   ├── modelo_figuras_v1.keras  Modelo de la Actividad 3.3, versionado
+│   ├── clases.txt               Una clase por línea (orden de las salidas de la red)
+│   └── model_card.json          Ficha técnica: entrada esperada, métricas, versiones, SHA-256
+├── src/                         Pipeline operativo (un módulo por fase)
+├── data/
+│   ├── conjunto_prueba/         Las 180 imágenes de prueba de la 3.3 (para verificar paridad)
+│   ├── ejemplos/                Casos nuevos, variaciones, fuera de dominio, sin clase e inválidos
+│   └── video/                   Video sintético de 30 s + etiquetas por cuadro
+├── notebooks/                   Práctica 4.1 ejecutada (análisis de resultados)
+├── entrenamiento/               Actividad 3.3: generador del dataset y notebook de entrenamiento
+├── herramientas/                Scripts de preparación (modelo y datos de prueba)
+├── requirements.txt             Dependencias con versión fija
+└── requirements-notebook.txt    Extras para los notebooks
+```
+
+## Reproducir todo desde cero
+
+```bash
+pip install -r requirements-notebook.txt
+cd entrenamiento && python generar_dataset.py && cd ..          # dataset propio (1,200 imágenes, semilla 42)
+jupyter nbconvert --to notebook --execute --inplace entrenamiento/Act3.3_Construccion_Modelo_Vision.ipynb
+python herramientas/preparar_modelo.py                          # Fase 1: versiona el modelo y crea su ficha
+python herramientas/generar_datos_prueba.py                     # datos de prueba y video
+jupyter nbconvert --to notebook --execute --inplace notebooks/Practica_Tema4_1_Pipeline_Operativo.ipynb
+```
+
+> Si se reentrena el modelo, `preparar_modelo.py` actualiza la huella SHA-256 de la ficha técnica. Si el archivo del
+> modelo cambia sin actualizar la ficha, el pipeline se niega a cargarlo.
+
+## Resultados principales (Actividad 4.1)
+
+| Prueba | Resultado |
+|---|---|
+| Paridad con la Actividad 3.3 (180 imágenes) | 99.44 % — idéntico; probabilidades iguales hasta el redondeo |
+| Throughput de inferencia (CPU, 2 núcleos) | ~100 img/s con lote 1 → ~3,000 img/s con lote 180 |
+| Latencia por cuadro en tiempo real | p50 ≈ 14 ms, p95 ≈ 20 ms (presupuesto a 15 FPS: 66.7 ms) |
+| Capacidad máxima en tiempo real | ≈ 60–80 FPS |
+| Video (figuras completas) | 100 % de exactitud |
+| Video (figura entrando por el borde) | 63 %: limitación identificada |
+| Archivos inválidos | rechazados con motivo, sin detener el lote |

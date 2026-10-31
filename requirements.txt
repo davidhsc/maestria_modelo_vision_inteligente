@@ -1,0 +1,10 @@
+# Dependencias del pipeline operativo (versiones fijas = resultados reproducibles)
+# Se usa tensorflow-cpu: el modelo es pequeño y no necesita GPU.
+tensorflow-cpu==2.21.0 ; platform_system != "Darwin"
+tensorflow==2.21.0 ; platform_system == "Darwin"
+keras==3.15.1
+numpy>=1.26,<3
+opencv-python-headless==5.0.0.93
+pillow>=10.0
+pyyaml>=6.0
+scikit-learn>=1.5        # división del conjunto de prueba (herramientas/)

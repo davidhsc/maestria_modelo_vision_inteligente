@@ -1,0 +1,3 @@
+circulo
+cuadrado
+triangulo

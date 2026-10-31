@@ -1,0 +1,39 @@
+# =============================================================================
+# Configuración del pipeline operativo
+# -----------------------------------------------------------------------------
+# Todo lo que puede cambiar entre un equipo y otro (rutas, umbrales, tamaños)
+# vive aquí y NO dentro del código. Así el mismo script funciona en una laptop,
+# en un servidor o dentro de un contenedor con solo cambiar este archivo.
+# Las rutas relativas se resuelven desde la carpeta raíz del proyecto.
+# =============================================================================
+
+modelo:
+  ruta: models/modelo_figuras_v1.keras     # modelo entrenado en la Actividad 3.3
+  tarjeta: models/model_card.json          # "ficha técnica": versión, métricas, entrada esperada
+  clases: models/clases.txt                # nombres de las clases, uno por línea
+  verificar_hash: true                     # comprobar que el archivo no se alteró (SHA-256)
+
+preprocesamiento:
+  # DEBE ser idéntico al entrenamiento (Actividad 3.3):
+  alto: 64                                 # tamaño de entrada de la red
+  ancho: 64
+  canales: 1                               # 1 = escala de grises
+  divisor: 255.0                           # 0..255 -> 0..1
+
+entrada:
+  extensiones_validas: [".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff"]
+  tamano_minimo: 16                        # píxeles: imágenes más chicas se rechazan
+
+inferencia:
+  tamano_lote: 32                          # imágenes por lote en el modo "lote"
+
+postprocesamiento:
+  umbral_confianza: 0.80                   # por debajo -> se marca como "baja_confianza"
+  top_k: 3                                 # cuántas clases se reportan ordenadas
+
+tiempo_real:
+  fps_objetivo: 15                         # ritmo al que llegan los cuadros (simulado)
+  ventana_suavizado: 5                     # votación entre los últimos N cuadros
+
+salida:
+  carpeta: outputs                         # resultados, imágenes anotadas y logs

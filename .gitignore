@@ -1,0 +1,18 @@
+# Resultados de ejecución (se regeneran en cada corrida)
+outputs/
+
+# Dataset de entrenamiento: se regenera idéntico con entrenamiento/generar_dataset.py (semilla 42)
+entrenamiento/dataset_figuras/
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Sistema operativo / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
