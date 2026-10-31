@@ -14,6 +14,47 @@ triángulo**, 99.44 % de exactitud en prueba) y la lleva de un notebook de labor
 
 ---
 
+## Versiones del proyecto
+
+Cada entrega queda marcada con una **etiqueta (tag)** de git, fija en su commit aunque el proyecto siga avanzando:
+
+| Etiqueta | Actividad | Qué contiene | Estado |
+|---|---|---|---|
+| `v0.1-act4.1` | 4.1 Pipeline operativo | Pipeline por fases (imagen, lote, tiempo real), datos de prueba, notebook 4.1 | ✅ |
+| `v0.2-act4.2` | 4.2 Empaquetado y despliegue | + Modelos TFLite, API web, Dockerfiles completo y edge, benchmark, paquete de entrega | ✅ |
+| `v1.0.0` | 4.3 Paquete profesional y video-demo | + Manual de instalación y operación, video-demo, versión final | ⏳ |
+
+### Cómo moverse entre versiones
+
+```bash
+git fetch --tags                        # traer las etiquetas del repositorio remoto
+git tag -n1                             # listar las versiones con su descripción
+
+git checkout v0.1-act4.1                # ver el proyecto tal como se entregó en la 4.1
+git checkout v0.2-act4.2                # ... en la 4.2
+git checkout main                       # volver a la versión más reciente
+```
+
+* `git checkout <etiqueta>` deja el repositorio en modo **solo lectura** (*detached HEAD*): sirve para revisar y
+  ejecutar esa versión, pero no para hacer commits.
+* Para **trabajar** a partir de una versión anterior, crea una rama: `git switch -c revision-4.1 v0.1-act4.1`.
+* Para comparar dos versiones: `git diff v0.1-act4.1 v0.2-act4.2 --stat` (archivos que cambiaron).
+* Sin git: en GitHub, el selector de ramas → pestaña **Tags** → cada versión se descarga como `.zip`.
+
+> Al cambiar de versión, los archivos que no están en git (`outputs/`, `dist/`, `entrenamiento/dataset_figuras/`)
+> no se modifican. Si una versión anterior se comporta distinto, regenera lo necesario con los scripts de
+> `herramientas/` de **esa** versión, y vuelve a construir las imágenes Docker (`docker build ...`), porque una
+> imagen construida con otra versión conserva el código con el que se construyó.
+
+### Crear la etiqueta de una entrega
+
+```bash
+git tag -a v1.0.0 -m "Actividad 4.3 - Paquete profesional y video-demo"
+git push origin --tags
+```
+
+---
+
 ## Inicio rápido
 
 ```bash
