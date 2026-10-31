@@ -15,10 +15,18 @@ lo necesario para que otra persona instale y ejecute el sistema, y nada más.
     ├── data/ejemplos/            imágenes para probar
     └── MANIFIESTO.json           lista de archivos con su huella SHA-256
 
+Hay dos paquetes:
+  * MÍNIMO (por defecto): lo necesario para OPERAR el sistema.
+  * COMPLETO (--completo): además el dataset, el entrenamiento (Actividad 3.3), los notebooks,
+    las pruebas, las herramientas, los resultados de rendimiento y la documentación: lo necesario
+    para REPRODUCIR todo el proyecto desde cero.
+
 Uso (desde la raíz del proyecto):
-    python herramientas/empaquetar.py
+    python herramientas/empaquetar.py              # dist/vision-figuras-v1.0.0.zip
+    python herramientas/empaquetar.py --completo   # dist/vision-figuras-v1.0.0-completo.zip
 """
 
+import argparse
 import hashlib
 import json
 import zipfile
@@ -29,29 +37,36 @@ RAIZ = Path(__file__).resolve().parents[1]
 INCLUIR = ["README.md", "LEEME_DESPLIEGUE.md", "requirements.txt", "requirements-api.txt",
            "requirements-edge.txt", "Dockerfile", "Dockerfile.edge", "docker-compose.yml", ".dockerignore",
            "docker", "config", "models", "src", "data/ejemplos"]
-IGNORAR = {"__pycache__", ".ipynb_checkpoints"}
+EXTRAS_COMPLETO = ["CHANGELOG.md", "requirements-notebook.txt", ".gitattributes", "entrenamiento/generar_dataset.py",
+                   "entrenamiento/Act3.3_Construccion_Modelo_Vision.ipynb", "entrenamiento/resultados",
+                   "entrenamiento/dataset_figuras", "data", "notebooks", "tests", "herramientas", "benchmarks", "docs"]
+IGNORAR = {"__pycache__", ".ipynb_checkpoints", ".pytest_cache"}
 
 
-def archivos_del_paquete():
-    for elemento in INCLUIR:
+def archivos_del_paquete(completo=False):
+    vistos = set()
+    for elemento in INCLUIR + (EXTRAS_COMPLETO if completo else []):
         ruta = RAIZ / elemento
-        if ruta.is_file():
-            yield ruta
-        elif ruta.is_dir():
-            yield from (p for p in sorted(ruta.rglob("*"))
-                        if p.is_file() and not IGNORAR.intersection(p.parts))
+        candidatos = [ruta] if ruta.is_file() else sorted(ruta.rglob("*")) if ruta.is_dir() else []
+        for p in candidatos:
+            if p.is_file() and not IGNORAR.intersection(p.parts) and p not in vistos:
+                vistos.add(p)
+                yield p
 
 
 def main():
+    ap = argparse.ArgumentParser(description="Genera el paquete de entrega")
+    ap.add_argument("--completo", action="store_true", help="incluir dataset, entrenamiento, notebooks y pruebas")
+    args = ap.parse_args()
     version = json.loads((RAIZ / "models" / "model_card.json").read_text(encoding="utf-8"))["version"]
-    nombre = f"vision-figuras-v{version}"
+    nombre = f"vision-figuras-v{version}" + ("-completo" if args.completo else "")
     destino = RAIZ / "dist" / f"{nombre}.zip"
     destino.parent.mkdir(exist_ok=True)
 
     manifiesto = {"paquete": nombre, "fecha": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                   "archivos": {}}
     with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as z:
-        for ruta in archivos_del_paquete():
+        for ruta in archivos_del_paquete(args.completo):
             relativa = ruta.relative_to(RAIZ).as_posix()
             z.write(ruta, f"{nombre}/{relativa}")
             manifiesto["archivos"][relativa] = {"bytes": ruta.stat().st_size,

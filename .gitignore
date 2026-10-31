@@ -21,3 +21,4 @@ outputs_docker/
 
 # Certificados exportados del equipo (nunca se suben al repositorio)
 certs/
+.pytest_cache/

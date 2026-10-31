@@ -4,10 +4,12 @@
 #   docker run IMAGEN api             -> igual que el anterior
 #   docker run IMAGEN --modo lote ... -> ejecuta el pipeline por línea de comandos
 #   docker run IMAGEN benchmark ...   -> ejecuta la medición de rendimiento
+#   docker run IMAGEN verificar       -> comprueba que la instalación esté completa
 set -e
 case "$1" in
   ""|api)    shift 2>/dev/null || true
              exec uvicorn --app-dir src api:app --host 0.0.0.0 --port 8000 "$@" ;;
   benchmark) shift; exec python3 src/benchmark.py "$@" ;;
+  verificar) shift; exec python3 src/verificar_instalacion.py "$@" ;;
   *)         exec python3 src/pipeline_operativo.py "$@" ;;
 esac

@@ -10,7 +10,7 @@ triángulo**, 99.44 % de exactitud en prueba) y la lleva de un notebook de labor
 |---|---|---|
 | 4.1 Pipeline operativo | `src/` + `notebooks/Practica_Tema4_1_Pipeline_Operativo.ipynb` | ✅ |
 | 4.2 Empaquetado y despliegue | `Dockerfile`, `Dockerfile.edge`, API, benchmark, `notebooks/Practica_Tema4_2_Empaquetado_Despliegue.ipynb` | ✅ |
-| 4.3 Paquete profesional y video-demo | Manual, video, versión 1.0 | ⏳ |
+| 4.3 Paquete profesional y video-demo | [Manual de instalación y operación](docs/MANUAL.md), pruebas automáticas, verificador, paquete completo, video-demo | ✅ |
 
 ---
 
@@ -22,7 +22,7 @@ Cada entrega queda marcada con una **etiqueta (tag)** de git, fija en su commit 
 |---|---|---|---|
 | `v0.1-act4.1` | 4.1 Pipeline operativo | Pipeline por fases (imagen, lote, tiempo real), datos de prueba, notebook 4.1 | ✅ |
 | `v0.2-act4.2` | 4.2 Empaquetado y despliegue | + Modelos TFLite, API web, Dockerfiles completo y edge, benchmark, paquete de entrega | ✅ |
-| `v1.0.0` | 4.3 Paquete profesional y video-demo | + Manual de instalación y operación, video-demo, versión final | ⏳ |
+| `v1.0.0` | 4.3 Paquete profesional y video-demo | + Manual, pruebas automáticas, verificador de instalación, paquete completo, video-demo | ✅ |
 
 ### Cómo moverse entre versiones
 
@@ -57,9 +57,13 @@ git push origin --tags
 
 ## Inicio rápido
 
+> Guía completa: **[docs/MANUAL.md](docs/MANUAL.md)** (instalación, operación, configuración, edge y solución de problemas).
+
 ```bash
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+
+python src/verificar_instalacion.py       # comprueba que todo quedó bien instalado
 
 # Una imagen
 python src/pipeline_operativo.py --modo imagen --entrada data/ejemplos/nuevas/triangulo_1.png
@@ -142,6 +146,8 @@ figura), `GET /health`, `GET /info`, `POST /predict` (campo `imagen`).
 ├── src/                         Pipeline operativo (un módulo por fase), api.py y benchmark.py
 ├── Dockerfile / Dockerfile.edge Imágenes completa y edge · docker/entrypoint.sh · docker-compose.yml
 ├── benchmarks/                  Resultados de rendimiento (JSON) y evidencia de ejecución (logs)
+├── tests/                       Pruebas automáticas (pytest -q)
+├── docs/MANUAL.md               Manual de instalación y operación
 ├── data/
 │   ├── conjunto_prueba/         Las 180 imágenes de prueba de la 3.3 (para verificar paridad)
 │   ├── ejemplos/                Casos nuevos, variaciones, fuera de dominio, sin clase e inválidos
