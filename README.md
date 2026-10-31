@@ -12,6 +12,12 @@ triángulo**, 99.44 % de exactitud en prueba) y la lleva de un notebook de labor
 | 4.2 Empaquetado y despliegue | `Dockerfile`, `Dockerfile.edge`, API, benchmark, `notebooks/Practica_Tema4_2_Empaquetado_Despliegue.ipynb` | ✅ |
 | 4.3 Paquete profesional y video-demo | [Manual de instalación y operación](docs/MANUAL.md), pruebas automáticas, verificador, paquete completo, video-demo | ✅ |
 
+### Video-demo
+
+**[docs/video_demo_v1.0.0.mp4](docs/video_demo_v1.0.0.mp4)** (1 min 55 s, sin audio, con textos explicativos): el problema y el
+modelo, el pipeline, el procesamiento por lote, el tiempo real, los contenedores Docker (también en Windows), el servicio
+web, la prueba del círculo punteado y la comparación entre el despliegue completo y el edge.
+
 ---
 
 ## Versiones del proyecto

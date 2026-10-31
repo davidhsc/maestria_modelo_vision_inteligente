@@ -6,6 +6,8 @@ lo necesario para que otra persona instale y ejecute el sistema, y nada más.
 
     vision-figuras-v1.0.0/
     ├── README.md                 instrucciones de instalación y uso
+    ├── docs/MANUAL.md            manual de instalación y operación
+    ├── CHANGELOG.md              historial de versiones
     ├── LEEME_DESPLIEGUE.md       despliegue con Docker (completo y edge)
     ├── requirements*.txt         dependencias con versión fija
     ├── Dockerfile, Dockerfile.edge, docker-compose.yml, .dockerignore, docker/
@@ -34,10 +36,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
-INCLUIR = ["README.md", "LEEME_DESPLIEGUE.md", "requirements.txt", "requirements-api.txt",
+INCLUIR = ["README.md", "LEEME_DESPLIEGUE.md", "CHANGELOG.md", "docs", "requirements.txt", "requirements-api.txt",
            "requirements-edge.txt", "Dockerfile", "Dockerfile.edge", "docker-compose.yml", ".dockerignore",
            "docker", "config", "models", "src", "data/ejemplos"]
-EXTRAS_COMPLETO = ["CHANGELOG.md", "requirements-notebook.txt", ".gitattributes", "entrenamiento/generar_dataset.py",
+EXTRAS_COMPLETO = ["requirements-notebook.txt", ".gitattributes", "entrenamiento/generar_dataset.py",
                    "entrenamiento/Act3.3_Construccion_Modelo_Vision.ipynb", "entrenamiento/resultados",
                    "entrenamiento/dataset_figuras", "data", "notebooks", "tests", "herramientas", "benchmarks", "docs"]
 IGNORAR = {"__pycache__", ".ipynb_checkpoints", ".pytest_cache"}

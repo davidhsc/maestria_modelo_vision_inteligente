@@ -325,7 +325,7 @@ Cada paquete incluye `MANIFIESTO.json` con la huella SHA-256 de cada archivo.
 ├── herramientas/             Preparación del modelo, conversión, datos, benchmark y empaquetado
 ├── benchmarks/               Resultados de rendimiento y evidencia de ejecución
 ├── docker/                   Punto de entrada de los contenedores
-├── docs/                     Este manual
+├── docs/                     Este manual y el video-demo
 ├── Dockerfile, Dockerfile.edge, docker-compose.yml
 ├── requirements*.txt         Dependencias por perfil
 ├── README.md, LEEME_DESPLIEGUE.md, CHANGELOG.md
