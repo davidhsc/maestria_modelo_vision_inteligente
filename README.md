@@ -14,9 +14,11 @@ triángulo**, 99.44 % de exactitud en prueba) y la lleva de un notebook de labor
 
 ### Video-demo
 
-**[docs/video_demo_v1.0.0.mp4](docs/video_demo_v1.0.0.mp4)** (2 min 33 s, con narración de voz sintética, música de fondo generada y textos explicativos): el problema y el
-modelo, el pipeline, el procesamiento por lote, el tiempo real, los contenedores Docker (también en Windows), el servicio
-web, la prueba del círculo punteado y la comparación entre el despliegue completo y el edge.
+**[docs/video_demo_v1.0.0.mp4](docs/video_demo_v1.0.0.mp4)** (5 min 20 s, narración con voz sintética en español de México,
+música de fondo generada y textos explicativos): contexto del proyecto, el problema y los datos, la red neuronal, el
+entrenamiento, el flujo operativo, el procesamiento por lotes, el tiempo real, cómo desplegar con Docker, Docker en acción
+(también en Windows), el servicio web con dibujos hechos a mano, la prueba del círculo punteado y la comparación entre el
+despliegue completo y el edge.
 
 ---
 
